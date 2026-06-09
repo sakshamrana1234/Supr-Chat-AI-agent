@@ -1,6 +1,6 @@
 import { SendMessageResponse, HistoryResponse, ApiErrorResponse } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
+const API_URL = (import.meta as unknown as { env: Record<string, string> }).env.VITE_API_URL ?? 'http://localhost:3001';
 
 class ApiError extends Error {
   constructor(
