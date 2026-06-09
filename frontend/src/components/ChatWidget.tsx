@@ -5,9 +5,9 @@ import { TypingIndicator } from './TypingIndicator';
 import { ErrorBanner } from './ErrorBanner';
 
 const SUGGESTED_QUESTIONS = [
-  'What are your shipping options?',
-  'How do I return an item?',
-  'What payment methods do you accept?',
+  'Track my latest order',
+  'Help me return an item',
+  'Explain payment options',
   'Can I cancel my order?',
 ];
 
@@ -17,7 +17,6 @@ export function ChatWidget() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-scroll to bottom when messages update
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
@@ -38,8 +37,8 @@ export function ChatWidget() {
     }
   };
 
-  const handleSuggestion = (q: string) => {
-    setInput(q);
+  const handleSuggestion = (question: string) => {
+    setInput(question);
     inputRef.current?.focus();
   };
 
@@ -47,47 +46,47 @@ export function ChatWidget() {
 
   return (
     <div className="chat-widget">
-      {/* Header */}
       <div className="chat-header">
-        <div className="chat-header-avatar">SC</div>
+        <div className="chat-header-avatar">AI</div>
         <div className="chat-header-info">
           <h1 className="chat-header-name">SwiftCart Support</h1>
           <p className="chat-header-status">
             <span className="status-dot" />
-            Online · Mon–Sat, 10 AM–7 PM IST
+            Online - Mon-Sat, 10 AM-7 PM IST
           </p>
         </div>
+        <span className="chat-header-badge">Beta</span>
       </div>
 
-      {/* Message list */}
       <div className="chat-messages" role="log" aria-live="polite" aria-label="Chat messages">
         {isLoadingHistory && (
-          <div className="loading-history">Loading conversation…</div>
+          <div className="loading-history">Loading conversation...</div>
         )}
 
         {isEmpty && !isLoadingHistory && (
           <div className="chat-empty">
-            <div className="chat-empty-icon">💬</div>
-            <p className="chat-empty-title">Hi there! 👋</p>
+            <div className="chat-empty-icon">AI</div>
+            <p className="chat-empty-title">How can I help today?</p>
             <p className="chat-empty-sub">
-              I'm the SwiftCart support agent. How can I help you today?
+              Ask about shipping, returns, payments, cancellations, or anything
+              you need before placing an order.
             </p>
             <div className="suggestions">
-              {SUGGESTED_QUESTIONS.map((q) => (
+              {SUGGESTED_QUESTIONS.map((question) => (
                 <button
-                  key={q}
+                  key={question}
                   className="suggestion-btn"
-                  onClick={() => handleSuggestion(q)}
+                  onClick={() => handleSuggestion(question)}
                 >
-                  {q}
+                  {question}
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        {messages.map((msg) => (
-          <MessageBubble key={msg.id} message={msg} />
+        {messages.map((message) => (
+          <MessageBubble key={message.id} message={message} />
         ))}
 
         {isLoading && <TypingIndicator />}
@@ -97,7 +96,6 @@ export function ChatWidget() {
         <div ref={bottomRef} />
       </div>
 
-      {/* Input area */}
       <div className="chat-input-area">
         <form className="chat-form" onSubmit={handleSubmit} noValidate>
           <textarea
@@ -106,7 +104,7 @@ export function ChatWidget() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type a message… (Enter to send)"
+            placeholder="Type a message... (Enter to send)"
             maxLength={1000}
             rows={1}
             disabled={isLoading}
@@ -129,7 +127,7 @@ export function ChatWidget() {
           </button>
         </form>
         <p className="chat-footer">
-          Powered by SwiftCart AI · {input.length}/1000
+          Powered by SwiftCart AI - {input.length}/1000
         </p>
       </div>
     </div>
